@@ -1,6 +1,3 @@
-# Tim's PDF bruteforcer,
-# made in python. Definitely
-# done before.
 from __future__ import print_function
 import sys
 import PyPDF2
