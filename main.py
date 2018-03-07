@@ -1,7 +1,6 @@
 from __future__ import print_function
 import sys
 import PyPDF2
-# import colorama # Uncomment if on windows, install colorama package
 
 def brute(dictionary, reader):
 	# colorama.init() #windows sucks
