@@ -16,11 +16,11 @@ def brute(dictionary, reader):
 	print("\nThe password is not in the wordlist :(")
 	return
 
+
 def main(argv):
 	if len(sys.argv) != 3:
 		print("Usage: pdfbf.py <file> <wordlist>\n")
 	else:
-		#print("Tim's PDF bruteforcer, brought to you by FYM Hot Sauce")
 		try:
 			print("[*] Opening PDF...")
 			pdfReader = PyPDF2.PdfFileReader(open(sys.argv[1], 'rb'))
