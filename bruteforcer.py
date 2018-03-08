@@ -3,7 +3,7 @@ import PyPDF2
 
 class Guesser:
 
-    def brute(self, dictionary, reader):
+    def bruteWordlist(self, dictionary, reader):
     	currentLine = 1
     	for line in dictionary.readlines():
     		sys.stdout.write("\r\033[K"+"Attempt "+str(currentLine)+", trying: "

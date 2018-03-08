@@ -1,28 +1,43 @@
 import sys
+import argparse
 import PyPDF2
 import bruteforcer
+import lists
 
 def main(argv):
-	if len(sys.argv) != 3:
-		print("Usage: pdfbf.py <file> <wordlist>\n")
-	else:
-		try:
-			print("[*] Opening PDF...")
-			pdfReader = PyPDF2.PdfFileReader(open(sys.argv[1], 'rb'))
-			print("[*] Opening wordlist...")
-			wordList = open(sys.argv[2], 'rbU')
-			if pdfReader.isEncrypted == False:
-				print("Operation failed, the PDF is not encrypted!")
-				exit()
-			else:
-				print("[*] PDF is encrypted, continuing...")
-				try:
-					guesser = bruteforcer.Guesser()
-					guesser.brute(wordList, pdfReader)
-				except IOError:
-					print("There was an IO error")
-		except IOError:
-			print("There was an IO error")
+	argParser = argparse.ArgumentParser()
+	argParser.add_argument("pdf", help="Designate a pdf file")
+	argParser.add_argument("-w", help="Use a wordlist")
+	argParser.add_argument("-b", help="Bruteforce every possible password",
+		action="store_true")
+	argParser.add_argument("-l", help="Chose character lists for -b argument")
+	argParser.add_argument("-c", help="Designate custom character set")
+	argParser.add_argument("-max", help="Chose maximum length of password",
+		type=int)
+	argParser.add_argument("-min", help="Chose minimum length of password",
+		type=int)
+	args = argParser.parse_args()
+	print(args)
+	try:
+		print("[*] Opening PDF...")
+		pdfReader = PyPDF2.PdfFileReader(open(args.pdf, 'rb'))
+		if pdfReader.isEncrypted == False:
+			print("[!] Operation failed, the PDF is not encrypted!")
+			exit()
+		else:
+			print("[*] PDF is encrypted, continuing...")
+			try:
+				guesser = bruteforcer.Guesser()
+				if args.w:
+					print("[*] Opening wordlist...")
+					wordList = open(args.w, 'rbU')
+					guesser.bruteWordlist(wordList, pdfReader)
+				if args.b:
+					print("[*] Compiling lists...")
+			except IOError:
+				print("There was an IO error")
+	except IOError:
+		print("There was an IO error. Is the file name correct?")
 
 if __name__ == "__main__":
 	main(sys.argv)
