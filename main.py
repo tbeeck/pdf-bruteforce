@@ -22,17 +22,25 @@ def main(argv):
 		print("[*] Opening PDF...")
 		pdfReader = PyPDF2.PdfFileReader(open(args.pdf, 'rb'))
 		if pdfReader.isEncrypted == False:
-			print("[!] Operation failed, the PDF is not encrypted!")
+			print("[!] Operation failed, the PDF is not encrypted.")
 			exit()
 		else:
 			print("[*] PDF is encrypted, continuing...")
 			try:
 				guesser = bruteforcer.Guesser()
+				guesserMinLength = 1
+				guesserMaxLength = 0
+				if args.min or args.max:
+					print("[*] Setting length requirements: "+str(args.min)+
+					"-"+str(args.max) + " characters")
+					guesserMaxLength = args.max
+					guesserMinLength = args.min
 				if args.w:
 					print("[*] Opening wordlist...")
 					wordList = open(args.w, 'rbU')
-					guesser.bruteWordlist(wordList, pdfReader)
-				if args.b:
+					guesser.bruteWordlist(wordList, pdfReader, guesserMinLength,
+						guesserMaxLength)
+				elif args.b:
 					print("[*] Compiling lists...")
 			except IOError:
 				print("There was an IO error")
