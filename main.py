@@ -3,8 +3,9 @@ import argparse
 import PyPDF2
 import bruteforcer
 import lists
-
+import signal
 def main(argv):
+	signal.signal(signal.SIGINT, lambda x,y: sys.exit(0))
 	argParser = argparse.ArgumentParser()
 	argParser.add_argument("pdf", help="Designate a pdf file")
 	argParser.add_argument("-w", help="Use a wordlist")
