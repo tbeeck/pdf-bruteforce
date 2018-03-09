@@ -4,6 +4,7 @@ import PyPDF2
 import bruteforcer
 import lists
 import signal
+
 def main(argv):
 	signal.signal(signal.SIGINT, lambda x,y: sys.exit(0))
 	argParser = argparse.ArgumentParser()
