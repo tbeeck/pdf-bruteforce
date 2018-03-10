@@ -18,3 +18,7 @@ class Guesser:
         			currentLine = currentLine + 1
     	print("\nThe password is not in the wordlist.")
     	return
+
+    def bruteRandom(self, list, reader, minLength=1, maxLength=0):
+
+        return

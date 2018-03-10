@@ -6,7 +6,7 @@ import lists
 import signal
 
 def main(argv):
-	signal.signal(signal.SIGINT, lambda x,y: sys.exit(0))
+	signal.signal(signal.SIGINT, lambda x,y: sys.exit(0)) # Ctrl+c
 	argParser = argparse.ArgumentParser()
 	argParser.add_argument("pdf", help="Designate a pdf file")
 	argParser.add_argument("-w", help="Use a wordlist")
@@ -44,6 +44,17 @@ def main(argv):
 						guesserMaxLength)
 				elif args.b:
 					print("[*] Compiling lists...")
+					selectedLists = []
+					if args.l:
+						if "l" in args.l:
+							selectedLists.extend(lists.Lists.lower)
+						if "c" in args.l:
+							selectedLists.extend(lists.Lists.upper)
+						if "s" in args.l:
+							selectedLists.extend(lists.Lists.symbols)
+					guesser.bruteRandom(selectedLists, pdfReader,
+						guesserMinLength, guesserMaxLength)
+
 			except IOError:
 				print("There was an IO error")
 	except IOError:
