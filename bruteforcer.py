@@ -1,5 +1,6 @@
 import sys
 import PyPDF2
+import itertools
 
 class Guesser:
 
@@ -20,5 +21,16 @@ class Guesser:
     	return
 
     def bruteRandom(self, list, reader, minLength=1, maxLength=0):
-
+        attempt = 0
+        for lengths in range(minLength, maxLength):
+            for guess in itertools.product(list, repeat=lengths):
+                attempt = attempt + 1
+                guess = "".join(guess)
+                sys.stdout.write("\r\033[K"+"Attempt "+str(attempt)+", trying: "
+                    + guess)
+        	sys.stdout.flush()
+                if reader.decrypt(guess) == 1:
+            		print("\nSuccess! The password was: " + guess)
+    			return
+        print("\nThe password was not discovered.")
         return
