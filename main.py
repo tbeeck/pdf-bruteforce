@@ -54,6 +54,10 @@ def main(argv):
 							selectedLists.extend(string.punctuation)
 						if "d" in args.l:
 							selectedLists.extend(string.digits)
+						if "w" in args.l:
+							selectedLists.extend(string.whitespace)
+					elif not args.l:
+						selectedLists.extend(string.printable)
 					guesser.bruteRandom(selectedLists, pdfReader,
 						guesserMinLength, guesserMaxLength)
 
