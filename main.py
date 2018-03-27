@@ -2,7 +2,6 @@ import sys
 import argparse
 import PyPDF2
 import bruteforcer
-import lists
 import signal
 
 def main(argv):
@@ -47,11 +46,13 @@ def main(argv):
 					selectedLists = []
 					if args.l:
 						if "l" in args.l:
-							selectedLists.extend(lists.Lists.lower)
-						if "c" in args.l:
-							selectedLists.extend(lists.Lists.upper)
+							selectedLists.extend(string.ascii_lowercase)
+						if "u" in args.l:
+							selectedLists.extend(string.ascii_uppercase)
 						if "s" in args.l:
-							selectedLists.extend(lists.Lists.symbols)
+							selectedLists.extend(string.punctuation)
+						if "s" in args.l:
+							selectedLists.extend(string.digits)
 					guesser.bruteRandom(selectedLists, pdfReader,
 						guesserMinLength, guesserMaxLength)
 
