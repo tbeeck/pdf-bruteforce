@@ -3,6 +3,7 @@ import argparse
 import PyPDF2
 import bruteforcer
 import signal
+import string
 
 def main(argv):
 	signal.signal(signal.SIGINT, lambda x,y: sys.exit(0)) # Ctrl+c
@@ -51,7 +52,7 @@ def main(argv):
 							selectedLists.extend(string.ascii_uppercase)
 						if "s" in args.l:
 							selectedLists.extend(string.punctuation)
-						if "s" in args.l:
+						if "d" in args.l:
 							selectedLists.extend(string.digits)
 					guesser.bruteRandom(selectedLists, pdfReader,
 						guesserMinLength, guesserMaxLength)
