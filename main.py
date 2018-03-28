@@ -8,23 +8,24 @@ import string
 def main(argv):
 	signal.signal(signal.SIGINT, lambda x,y: sys.exit(0)) # Ctrl+c
 	argParser = argparse.ArgumentParser()
+	methodGroup = argParser.add_mutually_exclusive_group(required=True)
 	argParser.add_argument("pdf", help="Designate a pdf file")
-	argParser.add_argument("-w", help="Use a wordlist")
-	argParser.add_argument("-b", help="Bruteforce every possible password",
+	methodGroup.add_argument("-w", help="Use a wordlist")
+	methodGroup.add_argument("-b", help="Bruteforce every possible password",
 		action="store_true")
 	argParser.add_argument("-l", help="Chose character lists for -b argument")
 	argParser.add_argument("-c", help="Designate custom character set")
 	argParser.add_argument("-max", help="Chose maximum length of password",
 		type=int)
 	argParser.add_argument("-min", help="Chose minimum length of password",
-		type=int)
+		type=int, default=1)
 	args = argParser.parse_args()
 	print(args)
 	try:
 		print("[*] Opening PDF...")
 		pdfReader = PyPDF2.PdfFileReader(open(args.pdf, 'rb'))
 		if pdfReader.isEncrypted == False:
-			print("[!] Operation failed, the PDF is not encrypted.")
+			print("[!] Operation failed: the PDF is not encrypted.")
 			exit()
 		else:
 			print("[*] PDF is encrypted, continuing...")
@@ -43,6 +44,10 @@ def main(argv):
 					guesser.bruteWordlist(wordList, pdfReader, guesserMinLength,
 						guesserMaxLength)
 				elif args.b:
+					if not args.max:
+						print("[!] Opearation failed: -b argument requires "+
+							"-max argument.")
+						return
 					print("[*] Compiling lists...")
 					selectedLists = []
 					if args.l:
@@ -57,11 +62,14 @@ def main(argv):
 						if "w" in args.l:
 							selectedLists.extend(" ")
 					elif not args.l:
-						selectedLists.extend(string.ascii_lowercase)
-						selectedLists.extend(string.ascii_uppercase)
-						selectedLists.extend(string.punctuation)
-						selectedLists.extend(string.digits)
-						selectedLists.extend(" ")
+						if args.c:
+							selectedLists.extend(args.c)
+						else:
+							selectedLists.extend(string.ascii_lowercase)
+							selectedLists.extend(string.ascii_uppercase)
+							selectedLists.extend(string.punctuation)
+							selectedLists.extend(string.digits)
+							selectedLists.extend(" ")
 					guesser.bruteRandom(selectedLists, pdfReader,
 						guesserMinLength, guesserMaxLength)
 
