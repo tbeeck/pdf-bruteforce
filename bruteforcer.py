@@ -22,7 +22,7 @@ class Guesser:
 
     def bruteRandom(self, list, reader, minLength=1, maxLength=0):
         attempt = 0
-        for lengths in range(minLength, maxLength):
+        for lengths in range(minLength, maxLength + 1):
             for guess in itertools.product(list, repeat=lengths):
                 attempt = attempt + 1
                 guess = "".join(guess)
